@@ -1,7 +1,7 @@
 {
   "development": {
     "username": "root",
-    "password": "Probankung8246",
+    "password": "123456789",
     "database": "dating",
     "host": "127.0.0.1",
     "dialect": "mysql"
