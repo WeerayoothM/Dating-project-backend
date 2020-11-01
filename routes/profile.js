@@ -8,4 +8,5 @@ router.delete('/',auth, profileControllers.deleteProfile);
 
 router.get('/other',auth,profileControllers.getOtherProfile);
 router.post('/matching',auth,profileControllers.matchingProfile);
+router.delete('/unmatching',auth,profileControllers.unMatchingProfile);
 module.exports = router;

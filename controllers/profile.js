@@ -47,6 +47,7 @@ const matchingProfile = async (req, res) => {
         const matching = await db.Like.findOne({ where: { liked_id: profile.id } });
         if (matching) {
             await db.Like.create({ liker_id: profile.id, liked_id: targetProfile.id, status: "Match" });
+            await matching.update({ status: "Match" });
             res.status(201).send({ status: "Success", message: "Matching Success" });
         } else {
             await db.Like.create({ liker_id: profile.id, liked_id: targetProfile.id, status: "Not Match" });
@@ -57,10 +58,25 @@ const matchingProfile = async (req, res) => {
     }
 }
 
+const unMatchingProfile = async (req, res) => {
+    const profile = await db.User.findOne({ where: { id: req.user.id } });
+    const targetProfile = await db.User.findOne({ where: { id: req.body.targetId } });
+    if (profile && targetProfile) {
+        const matchingOne = await db.Like.findOne({ where: { liked_id: profile.id, liker_id: targetProfile.id } });
+        const matchingTwo = await db.Like.findOne({ where: { liked_id: targetProfile.id, liker_id: profile.id } });
+        await matchingOne.destroy();
+        await matchingTwo.destroy();
+        res.status(201).send({ message: "Delete Success" });
+    } else {
+        res.status(404).send({ message: "Error Matching" });
+    }
+}
+
 module.exports = {
     getProfile,
     updateProfile,
     deleteProfile,
     getOtherProfile,
-    matchingProfile
+    matchingProfile,
+    unMatchingProfile
 };
