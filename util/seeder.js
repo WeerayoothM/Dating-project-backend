@@ -23,7 +23,7 @@ async function seed() {
   // console.log('user', JSON.stringify(user));
 
   await db.sequelize.sync({ force: true });
-  data.forEach(async ({ name, birthDay, images }) => {
+  data.forEach(async ({ name, birthDay, images, gender }) => {
     await db.User.create(
       {
         name: name,
@@ -31,6 +31,7 @@ async function seed() {
         Photos: images.map((image) => ({
           imageUrl: image,
         })),
+        gender:gender
       },
       {
         include: [db.Photo],
