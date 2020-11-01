@@ -7,4 +7,5 @@ router.put('/',auth, profileControllers.updateProfile);
 router.delete('/',auth, profileControllers.deleteProfile);
 
 router.get('/other',auth,profileControllers.getOtherProfile);
+router.post('/matching',auth,profileControllers.matchingProfile);
 module.exports = router;
