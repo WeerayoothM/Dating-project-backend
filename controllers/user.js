@@ -8,8 +8,11 @@ const register = async (req, res) => {
     const targetUser = await db.User.findOne({ where: { email } });
 
     if (targetUser) {
+        console.log('err')
+
         res.status(400).send({ message: "User already taken" })
     } else {
+        console.log('register')
         const salt = bcryptjs.genSaltSync(12);
         const hashedPassword = bcryptjs.hashSync(password, salt);
 
