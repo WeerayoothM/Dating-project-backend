@@ -4,12 +4,11 @@ const jwt = require('jsonwebtoken')
 
 
 const register = async (req, res) => {
-    const { name, email, birthday, gender, password, target, lat, long, motto } = req.body;
+    const { name, email, birthday, gender, password, target, lat, long, motto, imageUrl } = req.body;
     const targetUser = await db.User.findOne({ where: { email } });
 
     if (targetUser) {
         console.log('err')
-
         res.status(400).send({ message: "User already taken" })
     } else {
         console.log('register')
@@ -27,6 +26,13 @@ const register = async (req, res) => {
             motto,
             password: hashedPassword,
         });
+        const newUser = await db.User.findOne({ where: { email } });
+        console.log(newUser.id)
+        if (imageUrl) {
+            await db.Photo.create({ imageUrl, user_id: newUser.id })
+        }
+
+
         res.status(201).send({ message: "User created" });
     }
 
