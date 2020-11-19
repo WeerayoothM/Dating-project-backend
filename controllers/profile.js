@@ -3,7 +3,7 @@ const db = require('../models/');
 const getProfile = async (req, res) => {
     const profile = await db.User.findOne({ where: { id: req.user.id } });
     if (profile) {
-        res.status(200).send({ profile });
+        res.status(200).send({ profile, message: "Success"});
     } else {
         res.status(404).send({ message: "Not found" });
     }
@@ -21,6 +21,7 @@ const getOtherProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     const profile = await db.User.findOne({ where: { id: req.user.id } });
+    console.log({req})
     const { name, email, birthday, gender, target, lat, long, motto } = req.body;
     if (profile) {
         await profile.update({ name, email, birthday, gender, target, lat, long, motto });
