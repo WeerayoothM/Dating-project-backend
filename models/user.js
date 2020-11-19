@@ -14,7 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       target_minAge: DataTypes.INTEGER,
       target_maxAge: DataTypes.INTEGER,
       mobile_number: DataTypes.STRING,
-      showMe: DataTypes.INTEGER
+      showMe: DataTypes.INTEGER,
+      role: DataTypes.STRING,
     },
     {
       tableName: 'users',

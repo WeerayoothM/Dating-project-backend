@@ -9,13 +9,11 @@ const profileRoutes = require('./routes/profile');
 const uploadRoutes = require('./routes/upload');
 const fileUpload = require('express-fileupload');
 
-
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
-app.use(express.static("upload-files"));
+app.use(express.static('upload-files'));
 app.use(fileUpload());
-
 
 app.use('/auth', userRoutes);
 app.use('/admin', adminRoutes);
@@ -25,6 +23,6 @@ app.use('/uploads', uploadRoutes);
 
 app.listen(5555, () => console.log('server is running on port 5555'));
 
-db.sequelize.sync({ force: false }).then(() => {
+db.sequelize.sync({ alter: false }).then(() => {
   console.log('Database is running');
 });
