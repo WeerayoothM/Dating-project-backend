@@ -15,12 +15,8 @@ module.exports = (sequelize, DataTypes) => {
       target_maxAge: DataTypes.INTEGER,
       mobile_number: DataTypes.STRING,
       showMe: DataTypes.INTEGER,
-<<<<<<< HEAD
-      role: DataTypes.STRING,
-=======
       max_distance: DataTypes.INTEGER,
-      role: DataTypes.STRING
->>>>>>> 2cd16cca8a2be8f7da9bab04e653e09f04ac9a77
+      role: DataTypes.STRING,
     },
     {
       tableName: 'users',

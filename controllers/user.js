@@ -15,6 +15,11 @@ const register = async (req, res) => {
     motto,
     imageUrl,
   } = req.body;
+
+  if (!email) {
+    return res.status(400).send({ error: 'no email provided' });
+  }
+
   const targetUser = await db.User.findOne({ where: { email } });
 
   if (targetUser) {
@@ -43,7 +48,7 @@ const register = async (req, res) => {
       await db.Photo.create({ imageUrl, user_id: newUser.id });
     }
     // generating random likes
-    generateBotLikes();
+    //await generateBotLikes(newUser);
     res.status(201).send({ message: 'User created' });
   }
 };
@@ -70,6 +75,32 @@ const login = async (req, res) => {
 
 module.exports = { register, login };
 
-function generateBotLikes() {
+async function generateBotLikes(user) {
+  const target = user.target;
+  const filter = {};
+  if (target === 'male') {
+    filter.gender = 'male';
+  }
+  if (target === 'female') {
+    filter.gender = 'female';
+  }
+  const users = await db.User.findAll({
+    where: filter,
+    attributes: ['id', 'name', 'birthday', 'gender', 'motto'],
+    include: {
+      model: db.Photo,
+    },
+  });
+  const length = users.length;
+  const randCount = Math.ceil(length * 0.1);
+
+  for (let i = 0; i < randCount; i++) {
+    const like = User.build({ liker_id: '1', status: 'like', liked_id: '2' });
+  }
+
+  console.log('randCount', randCount);
+  // const randIndex = Math.floor(Math.random() * length);
+  // const randUser = users[randIndex];
+  // res.send({ randUser });
   console.log('generating bot likes');
 }
