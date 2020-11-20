@@ -36,5 +36,19 @@ const deleteProfileById = async (req, res) => {
   }
   res.send(targetUser);
 };
+const changeStatus = async (req, res) => {
+  console.log("req.params.id", req.params.id);
+  const targetUser = await db.User.findOne({ where: { id: req.params.id } });
+  console.log("targetUser", targetUser);
+  if (targetUser) {
+    const newStatus = targetUser.status ?  0:1
+    targetUser.status = newStatus 
+    await targetUser.save();
+    res.status(200).send({ message: "updated" });
+  } else {
+    res.status(404).send({ message: "id not found" });
+  }
+  res.send(targetUser);
+};
 
-module.exports = { getAllProfiles, getProfilesById, deleteProfileById };
+module.exports = { getAllProfiles, getProfilesById, deleteProfileById, changeStatus };

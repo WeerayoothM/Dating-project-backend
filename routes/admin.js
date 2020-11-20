@@ -5,6 +5,7 @@ const router = express.Router()
 router.get("/users", adminControllers.getAllProfiles)
 router.get("/users/:id", adminControllers.getProfilesById)
 router.delete("/users/:id", adminControllers.deleteProfileById)
+router.put("/users/:id", adminControllers.changeStatus)
 
 
 
