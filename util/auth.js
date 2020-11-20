@@ -3,8 +3,12 @@ const jwt = require('jsonwebtoken');
 const db = require('../models');
 
 function extractToken(req) {
-  const headerAuth = req.headers['authorization'].split(' ');
-  return headerAuth[1];
+  const headerAuth = req.headers['authorization'];
+  if (!headerAuth) {
+    return null;
+  }
+  const token = headerAuth.split(' ')[1];
+  return token;
 }
 
 const auth = (req, res, next) => {
