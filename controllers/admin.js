@@ -6,7 +6,7 @@ const getAllProfiles = async (req, res) => {
   const Op = Sequelize.Op;
   console.log(name);
   let query = {};
-  if(name){
+  if (name) {
     query = {
       where: { name: { [Op.like]: `%${name}%` } },
     };
