@@ -11,6 +11,12 @@ module.exports = (sequelize, DataTypes) => {
       lat: DataTypes.STRING,
       long: DataTypes.STRING,
       motto: DataTypes.STRING,
+      target_minAge: DataTypes.INTEGER,
+      target_maxAge: DataTypes.INTEGER,
+      mobile_number: DataTypes.STRING,
+      showMe: DataTypes.INTEGER,
+      max_distance: DataTypes.INTEGER,
+      role: DataTypes.STRING
     },
     {
       tableName: 'users',

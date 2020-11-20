@@ -3,39 +3,39 @@ const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
-  const {
-    name,
-    email,
-    birthday,
-    gender,
-    password,
-    target,
-    lat,
-    long,
-    motto,
-  } = req.body;
-  const targetUser = await db.User.findOne({ where: { email } });
+    const { name, email, birthday, gender, password, target, lat, long, motto, imageUrl } = req.body;
+    const targetUser = await db.User.findOne({ where: { email } });
 
-  if (targetUser) {
-    res.status(400).send({ message: "User already taken" });
-  } else {
-    const salt = bcryptjs.genSaltSync(12);
-    const hashedPassword = bcryptjs.hashSync(password, salt);
+    if (targetUser) {
+        console.log('err')
+        res.status(400).send({ message: "User already taken" })
+    } else {
+        console.log('register')
+        const salt = bcryptjs.genSaltSync(12);
+        const hashedPassword = bcryptjs.hashSync(password, salt);
 
-    await db.User.create({
-      name,
-      email,
-      birthday,
-      gender,
-      target,
-      lat,
-      long,
-      motto,
-      password: hashedPassword,
-    });
-    res.status(201).send({ message: "User created" });
-  }
-};
+        await db.User.create({
+            name,
+            email,
+            birthday,
+            gender,
+            target,
+            lat,
+            long,
+            motto,
+            password: hashedPassword,s
+        });
+        const newUser = await db.User.findOne({ where: { email } });
+        console.log(newUser.id)
+        if (imageUrl) {
+            await db.Photo.create({ imageUrl, user_id: newUser.id })
+        }
+
+
+        res.status(201).send({ message: "User created" });
+    }
+
+}
 
 const login = async (req, res) => {
   const { email, password } = req.body;
