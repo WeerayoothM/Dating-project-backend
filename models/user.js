@@ -1,11 +1,11 @@
 module.exports = (sequelize, DataTypes) => {
   const model = sequelize.define(
-    'User',
+    "User",
     {
       name: DataTypes.STRING,
       email: DataTypes.STRING,
       password: DataTypes.STRING,
-      birthday: DataTypes.INTEGER,
+      birthday: DataTypes.DATEONLY,
       gender: DataTypes.STRING,
       target: DataTypes.STRING,
       lat: DataTypes.STRING,
@@ -14,27 +14,31 @@ module.exports = (sequelize, DataTypes) => {
       target_minAge: DataTypes.INTEGER,
       target_maxAge: DataTypes.INTEGER,
       mobile_number: DataTypes.STRING,
-      showMe: DataTypes.INTEGER
+      showMe: DataTypes.INTEGER,
+      max_distance: DataTypes.INTEGER,
+      role: DataTypes.STRING,
+      status: DataTypes.INTEGER,
+      role: DataTypes.INTEGER
     },
     {
-      tableName: 'users',
+      tableName: "users",
       timestamps: false,
     }
   );
   model.associate = (models) => {
     model.belongsToMany(models.User, {
       through: models.Like,
-      as: 'Liker',
-      foreignKey: 'liker_id',
+      as: "Liker",
+      foreignKey: "liker_id",
     });
     model.belongsToMany(models.User, {
       through: models.Like,
-      as: 'Liked',
-      foreignKey: 'liked_id',
+      as: "Liked",
+      foreignKey: "liked_id",
     });
 
     model.hasMany(models.Photo, {
-      foreignKey: 'user_id',
+      foreignKey: "user_id",
     });
   };
 

@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const app = express();
 const db = require('./models');
 const cors = require('cors');
@@ -16,6 +16,11 @@ app.use(express.urlencoded({ limit: '50mb', extended: false }));
 app.use(express.static("upload-files"));
 app.use(fileUpload());
 
+app.use("/auth", userRoutes);
+app.use("/admin", adminRoutes);
+app.use("/play", playRoutes);
+app.use("/profile", profileRoutes);
+app.use("/uploads", uploadRoutes);
 
 app.use('/auth', userRoutes);
 app.use('/admin', adminRoutes);
@@ -24,8 +29,6 @@ app.use('/profile', profileRoutes);
 app.use('/upload', cloudinaryRoutes);
 app.use('/uploads', uploadRoutes);
 
-app.listen(5555, () => console.log('server is running on port 5555'));
-
-db.sequelize.sync({ force: false }).then(() => {
-  console.log('Database is running');
+db.sequelize.sync({ alter: false }).then(() => {
+  console.log("Database is running");
 });
