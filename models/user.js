@@ -18,6 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       max_distance: DataTypes.INTEGER,
       role: DataTypes.STRING,
       status: DataTypes.INTEGER,
+      role: DataTypes.INTEGER
     },
     {
       tableName: "users",
