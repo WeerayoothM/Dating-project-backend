@@ -18,5 +18,5 @@ router.delete(
   adminControllers.deleteProfileById
 );
 router.put("/users/:id", auth, checkAdmin, adminControllers.changeStatus);
-
+router.post("/users/:id", auth, checkAdmin, adminControllers.editUser)
 module.exports = router;

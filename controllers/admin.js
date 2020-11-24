@@ -50,5 +50,16 @@ const changeStatus = async (req, res) => {
   }
   res.send(targetUser);
 };
+const editUser = async (req, res) => {
+  const targetUser = await db.User.findOne({ where: { id: req.params.id } });
+  targetUser.name = req.body.name
+  targetUser.email = req.body.email
+  
+  targetUser.save()
+  console.log('targetUser', targetUser)
+  res.status(200).send({message:"updated"})
 
-module.exports = { getAllProfiles, getProfilesById, deleteProfileById, changeStatus };
+
+}
+
+module.exports = { getAllProfiles, getProfilesById, deleteProfileById, changeStatus, editUser };

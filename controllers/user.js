@@ -65,7 +65,10 @@ const login = async (req, res) => {
         { expiresIn: 3600 }
       );
       const role = targetUser.role;
-      res.status(200).send({ token, role });
+      const status = targetUser.status
+      console.log('status', status)
+      res.status(200).send({ token, role ,status});
+    
     } else {
       res.status(400).send({ message: "Wrong password" });
     }
