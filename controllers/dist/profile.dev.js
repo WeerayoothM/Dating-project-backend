@@ -87,8 +87,7 @@ var getOtherProfile = function getOtherProfile(req, res) {
 };
 
 var updateProfile = function updateProfile(req, res) {
-  var profile, _req$body, name, email, birthday, gender, target, lat, _long, motto;
-
+  var profile;
   return regeneratorRuntime.async(function updateProfile$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
@@ -102,41 +101,28 @@ var updateProfile = function updateProfile(req, res) {
 
         case 2:
           profile = _context3.sent;
-          console.log({
-            req: req
-          });
-          _req$body = req.body, name = _req$body.name, email = _req$body.email, birthday = _req$body.birthday, gender = _req$body.gender, target = _req$body.target, lat = _req$body.lat, _long = _req$body["long"], motto = _req$body.motto;
 
           if (!profile) {
-            _context3.next = 11;
+            _context3.next = 9;
             break;
           }
 
-          _context3.next = 8;
-          return regeneratorRuntime.awrap(profile.update({
-            name: name,
-            email: email,
-            birthday: birthday,
-            gender: gender,
-            target: target,
-            lat: lat,
-            "long": _long,
-            motto: motto
-          }));
+          _context3.next = 6;
+          return regeneratorRuntime.awrap(profile.update(req['body']));
 
-        case 8:
+        case 6:
           res.status(201).send({
             message: "Update Success"
           });
-          _context3.next = 12;
+          _context3.next = 10;
           break;
 
-        case 11:
+        case 9:
           res.status(404).send({
             message: "Not found"
           });
 
-        case 12:
+        case 10:
         case "end":
           return _context3.stop();
       }

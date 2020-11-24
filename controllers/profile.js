@@ -21,10 +21,8 @@ const getOtherProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
     const profile = await db.User.findOne({ where: { id: req.user.id } });
-    console.log({req})
-    const { name, email, birthday, gender, target, lat, long, motto } = req.body;
     if (profile) {
-        await profile.update({ name, email, birthday, gender, target, lat, long, motto });
+        await profile.update(req['body']);
         res.status(201).send({ message: "Update Success" });
     } else {
         res.status(404).send({ message: "Not found" });
