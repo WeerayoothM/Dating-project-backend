@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express");
 const app = express();
 const db = require('./models');
@@ -16,12 +17,6 @@ app.use(express.urlencoded({ limit: '50mb', extended: false }));
 app.use(express.static("upload-files"));
 app.use(fileUpload());
 
-app.use("/auth", userRoutes);
-app.use("/admin", adminRoutes);
-app.use("/play", playRoutes);
-app.use("/profile", profileRoutes);
-app.use("/uploads", uploadRoutes);
-
 app.use('/auth', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/play', playRoutes);
@@ -32,3 +27,7 @@ app.use('/uploads', uploadRoutes);
 db.sequelize.sync({ alter: false }).then(() => {
   console.log("Database is running");
 });
+
+app.listen(process.env.PORT, () => {
+  console.log(`Server is running at port: ${process.env.PORT}`)
+})
