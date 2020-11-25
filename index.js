@@ -17,14 +17,14 @@ app.use(express.urlencoded({ limit: '50mb', extended: false }));
 app.use(express.static("upload-files"));
 app.use(fileUpload());
 
-app.use('/auth', userRoutes);
+app.use('/users', userRoutes);
 app.use('/admin', adminRoutes);
 app.use('/play', playRoutes);
 app.use('/profile', profileRoutes);
 app.use('/upload', cloudinaryRoutes);
 app.use('/uploads', uploadRoutes);
 
-db.sequelize.sync({ alter: false }).then(() => {
+db.sequelize.sync({ alter: false, force: false }).then(() => {
   console.log("Database is running");
 });
 

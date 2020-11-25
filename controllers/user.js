@@ -40,10 +40,9 @@ const register = async (req, res) => {
       long,
       motto,
       password: hashedPassword,
-      role: "user",
+      role: 0,
     });
     const newUser = await db.User.findOne({ where: { email } });
-    console.log(newUser.id);
     if (imageUrl) {
       await db.Photo.create({ imageUrl, user_id: newUser.id });
     }
@@ -74,7 +73,23 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const getUserById = async (req, res) => {
+  const userId = req.params.userId;
+  const targetUser = await db.User.findOne({
+    where: { id: userId },
+    include: [
+      {
+        model: db.Photo
+      }
+    ]
+  });
+
+  if (targetUser) return res.status(200).send(targetUser)
+  else return res.status(404).send({ message: 'Not found user' })
+
+}
+
+module.exports = { register, login, getUserById };
 
 async function generateBotLikes(user) {
   const target = user.target;
