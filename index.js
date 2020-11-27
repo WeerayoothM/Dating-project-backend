@@ -26,7 +26,7 @@ app.use('/profile', profileRoutes);
 app.use('/upload', cloudinaryRoutes);
 app.use('/uploads', uploadRoutes);
 
-db.sequelize.sync({ alter: false, force: false }).then(() => {
+db.sequelize.sync({ alter: true, force: false }).then(() => {
   console.log("Database is running");
 });
 
@@ -39,23 +39,25 @@ const socket = require('socket.io')
 const io = socket(server);
 const jwt = require("jsonwebtoken");
 
-// io.use(async (socket, next) => {
-//   try {
-//     const token = socket.handshake.query.token;
-//     const payload = await jwt.verify(token, process.env.SECRET_KEY);
-//     socket.userId = payload.id;
-//     // socket.userName = payload.username
-//     next();
-//   } catch (err) {}
-// });
+io.use(async (socket, next) => {
+  try {
+    const token = socket.handshake.query.token;
+    const payload = await jwt.verify(token, process.env.SECRET_KEY);
+    socket.userId = payload.id;
+    // socket.userName = payload.username
+    next();
+  } catch (err) {
+    socket.emit('token-expired', { message: 'token-expired' });
+  }
+});
 
 io.on('connection', socket => {
   // console.log('user connect')
 
   // เมื่อ Client ตัดการเชื่อมต่อ
-  // socket.on('disconnect', () => {
-  // console.log('user disconnected')
-  // })
+  socket.on('disconnect', () => {
+    console.log('user disconnected')
+  })
 
   // ส่งข้อมูลไปยัง Client ทุกตัวที่เขื่อมต่อแบบ Realtime
   socket.on('sent_message', function (data) {
