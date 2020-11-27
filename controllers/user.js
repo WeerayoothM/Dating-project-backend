@@ -60,14 +60,14 @@ const login = async (req, res) => {
     if (bcryptjs.compareSync(password, targetUser.password)) {
       const token = jwt.sign(
         { id: targetUser.id, name: targetUser.name },
-        "datingApp",
+        process.env.SECRET_KEY,
         { expiresIn: 3600 }
       );
       const role = targetUser.role;
       const status = targetUser.status
       console.log('status', status)
-      res.status(200).send({ token, role ,status});
-    
+      res.status(200).send({ token, role, status });
+
     } else {
       res.status(400).send({ message: "Wrong password" });
     }
