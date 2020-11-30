@@ -12,7 +12,7 @@ const getNextProfile = async (req, res) => {
   }
   console.log("filter", filter);
   const users = await db.User.findAll({
-    where: filter,
+    where: { ...filter, id: { [Op.ne]: req.user.id } },
     attributes: ["id", "name", "birthday", "gender", "motto", "lat", "long"],
     include: [
       {
