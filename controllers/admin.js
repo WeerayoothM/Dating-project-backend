@@ -41,8 +41,8 @@ const changeStatus = async (req, res) => {
   const targetUser = await db.User.findOne({ where: { id: req.params.id } });
   console.log("targetUser", targetUser);
   if (targetUser) {
-    const newStatus = targetUser.status ?  0:1
-    targetUser.status = newStatus 
+    const newStatus = targetUser.status ? 0 : 1;
+    targetUser.status = newStatus;
     await targetUser.save();
     res.status(200).send({ message: "updated" });
   } else {
@@ -52,14 +52,18 @@ const changeStatus = async (req, res) => {
 };
 const editUser = async (req, res) => {
   const targetUser = await db.User.findOne({ where: { id: req.params.id } });
-  targetUser.name = req.body.name
-  targetUser.email = req.body.email
-  
-  targetUser.save()
-  console.log('targetUser', targetUser)
-  res.status(200).send({message:"updated"})
+  targetUser.name = req.body.name;
+  targetUser.email = req.body.email;
 
+  targetUser.save();
+  console.log("targetUser", targetUser);
+  res.status(200).send({ message: "updated" });
+};
 
-}
-
-module.exports = { getAllProfiles, getProfilesById, deleteProfileById, changeStatus, editUser };
+module.exports = {
+  getAllProfiles,
+  getProfilesById,
+  deleteProfileById,
+  changeStatus,
+  editUser,
+};

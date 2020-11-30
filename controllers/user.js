@@ -43,7 +43,6 @@ const register = async (req, res) => {
       role: 0,
     });
     const newUser = await db.User.findOne({ where: { email } });
-    console.log(newUser.id);
     if (imageUrl) {
       await db.Photo.create({ imageUrl, user_id: newUser.id });
     }
@@ -61,14 +60,14 @@ const login = async (req, res) => {
     if (bcryptjs.compareSync(password, targetUser.password)) {
       const token = jwt.sign(
         { id: targetUser.id, name: targetUser.name },
-        "datingApp",
+        process.env.SECRET_KEY,
         { expiresIn: 3600 }
       );
       const role = targetUser.role;
       const status = targetUser.status
       console.log('status', status)
-      res.status(200).send({ token, role ,status});
-    
+      res.status(200).send({ token, role, status });
+
     } else {
       res.status(400).send({ message: "Wrong password" });
     }
@@ -77,7 +76,23 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { register, login };
+const getUserById = async (req, res) => {
+  const userId = req.params.userId;
+  const targetUser = await db.User.findOne({
+    where: { id: userId },
+    include: [
+      {
+        model: db.Photo
+      }
+    ]
+  });
+
+  if (targetUser) return res.status(200).send(targetUser)
+  else return res.status(404).send({ message: 'Not found user' })
+
+}
+
+module.exports = { register, login, getUserById };
 
 async function generateBotLikes(user) {
   const target = user.target;

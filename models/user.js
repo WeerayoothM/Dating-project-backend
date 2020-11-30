@@ -44,6 +44,12 @@ module.exports = (sequelize, DataTypes) => {
     model.hasMany(models.Photo, {
       foreignKey: "user_id",
     });
+
+    model.hasMany(models.ChatLine, {
+      foreignKey: "user_id",
+    });
+
+
   };
 
   return model;

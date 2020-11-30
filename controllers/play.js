@@ -12,7 +12,7 @@ const getNextProfile = async (req, res) => {
   }
   console.log("filter", filter);
   const users = await db.User.findAll({
-    where: filter,
+    where: { ...filter, id: { [Op.ne]: req.user.id } },
     attributes: ["id", "name", "birthday", "gender", "motto", "lat", "long"],
     include: [
       {
@@ -28,8 +28,11 @@ const getNextProfile = async (req, res) => {
       },
     ],
   });
+
   const filtered = users.filter((user) => {
-    const find = user.Liked.find((ele) => ele.id === req.user.id);
+    const find = user.Liked.find((ele) => {
+      return ele.id === req.user.id
+    });
     if (!find) return true;
     return false;
   });
@@ -43,6 +46,7 @@ const getNextProfile = async (req, res) => {
 const postLike = async (req, res) => {
   const likedId = req.params.id;
   const likerId = req.user.id;
+  console.log(likedId, likerId)
 
   const find = await db.Like.findOne({
     where: {
@@ -79,7 +83,37 @@ const postLike = async (req, res) => {
   res.send({ message: "good luck, not match yet" });
 };
 
+const getAllMatches = async (req, res) => {
+  const likerId = req.user.id;
+  const findMatchedUserId = await db.Like.findAll({
+    where: {
+      liker_id: likerId,
+      status: 'match'
+    },
+    attributes: ['liked_id'],
+  });
+
+  const matchedId = findMatchedUserId.reduce((acc, item) => {
+    return [...acc, item.liked_id]
+  }, [])
+  const userMatched = await db.User.findAll({
+    where: { id: matchedId },
+    include: [
+      {
+        model: db.Photo,
+      },
+    ]
+  })
+
+  if (userMatched) {
+    return res.send(userMatched)
+  } else {
+    return res.send({ message: 'Not match yet' })
+  }
+}
+
 module.exports = {
   getNextProfile,
   postLike,
+  getAllMatches
 };
