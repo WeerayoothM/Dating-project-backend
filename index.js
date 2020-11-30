@@ -3,7 +3,6 @@ const express = require("express");
 const app = express();
 const db = require('./models');
 const cors = require('cors');
-// const socket = require('socket.io')
 
 const userRoutes = require('./routes/user');
 const adminRoutes = require('./routes/admin');
@@ -26,7 +25,7 @@ app.use('/profile', profileRoutes);
 app.use('/upload', cloudinaryRoutes);
 app.use('/uploads', uploadRoutes);
 
-db.sequelize.sync({ alter: true, force: false }).then(() => {
+db.sequelize.sync({ alter: false, force: false }).then(() => {
   console.log("Database is running");
 });
 
@@ -59,9 +58,33 @@ io.on('connection', socket => {
     console.log('user disconnected')
   })
 
+  // fetch chat data when client join chat room
+  socket.on('join', async (data) => {
+    const participants = data.userId < data.oppositeUserId ? `${data.userId}-${data.oppositeUserId}` : `${data.oppositeUserId}-${data.userId}`
+    const existingRoom = await db.Room.findOne({ where: { participants } });
+    if (existingRoom) {
+      console.log('existingRoom.id', existingRoom)
+      socket.roomId = existingRoom.id
+    } else {
+      const newRoom = await db.Room.create({ participants })
+      socket.roomId = newRoom.id
+    }
+    console.log(socket.roomId)
+    const roomData = await db.ChatLine.findAll({
+      where: { room_id: socket.roomId },
+      include: [
+        {
+          model: db.User
+        }
+      ]
+    })
+    socket.emit('room-data', roomData)
+  })
+
   // ส่งข้อมูลไปยัง Client ทุกตัวที่เขื่อมต่อแบบ Realtime
-  socket.on('sent_message', function (data) {
+  socket.on('sent_message', async (data) => {
     console.log(data.message, data.userId)
+    await db.ChatLine.create({ message: data.message, room_id: socket.roomId, user_id: data.userId })
     io.sockets.emit('new_message', { message: data.message, userId: data.userId })
   })
 })
