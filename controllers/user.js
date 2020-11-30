@@ -40,7 +40,7 @@ const register = async (req, res) => {
       long,
       motto,
       password: hashedPassword,
-      role: "user",
+      role: 0,
     });
     const newUser = await db.User.findOne({ where: { email } });
     console.log(newUser.id);
