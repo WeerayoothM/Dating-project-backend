@@ -17,7 +17,11 @@ module.exports = (sequelize, DataTypes) => {
       showMe: DataTypes.BOOLEAN,
       max_distance: DataTypes.INTEGER,
       status: DataTypes.INTEGER,
-      role: DataTypes.INTEGER
+      role: DataTypes.INTEGER,
+      passions: DataTypes.STRING,
+      job_title: DataTypes.STRING,
+      company: DataTypes.STRING,
+      school: DataTypes.STRING
     },
     {
       tableName: "users",
