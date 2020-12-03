@@ -57,6 +57,8 @@ io.on('connection', socket => {
     console.log('user disconnected')
   })
 
+  // socket.join('room1')
+
   // fetch chat data when client join chat room
   socket.on('join', async (data) => {
     const participants = data.userId < data.oppositeUserId ? `${data.userId}-${data.oppositeUserId}` : `${data.oppositeUserId}-${data.userId}`
@@ -68,6 +70,7 @@ io.on('connection', socket => {
       const newRoom = await db.Room.create({ participants })
       socket.roomId = newRoom.id
     }
+    socket.leaveAll()
     socket.join(`${socket.roomId}`);
 
     const roomData = await db.ChatLine.findAll({
@@ -96,5 +99,10 @@ io.on('connection', socket => {
     })
 
     io.in(`${socket.roomId}`).emit('new_message', { newMessage, chatRoomId: socket.roomId })
+  })
+
+  // handle the typing message event
+  socket.on('typing', data => {
+    socket.to(`${socket.roomId}`).emit('typing', { userId: socket.userId })
   })
 })
