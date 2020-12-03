@@ -12,7 +12,10 @@ var getProfile = function getProfile(req, res) {
           return regeneratorRuntime.awrap(db.User.findOne({
             where: {
               id: req.user.id
-            }
+            },
+            include: [{
+              model: db.Photo
+            }]
           }));
 
         case 2:

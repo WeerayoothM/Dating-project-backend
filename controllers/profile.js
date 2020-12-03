@@ -1,9 +1,16 @@
 const db = require('../models/');
 
 const getProfile = async (req, res) => {
-    const profile = await db.User.findOne({ where: { id: req.user.id } });
+    const profile = await db.User.findOne({
+        where: { id: req.user.id }, 
+        include: [
+            {
+                model: db.Photo
+            }
+        ]
+    });
     if (profile) {
-        res.status(200).send({ profile, message: "Success"});
+        res.status(200).send({ profile, message: "Success" });
     } else {
         res.status(404).send({ message: "Not found" });
     }
