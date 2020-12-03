@@ -16,7 +16,6 @@ module.exports = (sequelize, DataTypes) => {
       mobile_number: DataTypes.STRING,
       showMe: DataTypes.BOOLEAN,
       max_distance: DataTypes.INTEGER,
-      role: DataTypes.STRING,
       status: DataTypes.INTEGER,
       role: DataTypes.INTEGER,
       passions: DataTypes.STRING,

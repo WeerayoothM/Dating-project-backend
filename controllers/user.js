@@ -5,14 +5,15 @@ const jwt = require("jsonwebtoken");
 const register = async (req, res) => {
   const {
     name,
-    email,
-    birthday,
-    gender,
+    phone,
     password,
-    target,
-    lat,
-    long,
+    email,
+    gender,
     motto,
+    birthday,
+    target,
+    latitude,
+    longitude,
     imageUrl,
   } = req.body;
 
@@ -33,13 +34,19 @@ const register = async (req, res) => {
     await db.User.create({
       name,
       email,
-      birthday,
       gender,
-      target,
-      lat,
-      long,
       motto,
+      birthday,
+      target,
+      lat: latitude,
+      long: longitude,
+      mobile_number: phone,
+      target_minAge: 18,
+      target_maxAge: 30,
       password: hashedPassword,
+      max_distance: 80,
+      showMe: 1,
+      status: 1,
       role: 0,
     });
     const newUser = await db.User.findOne({ where: { email } });
