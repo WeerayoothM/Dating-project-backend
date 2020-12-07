@@ -5,6 +5,8 @@ const auth = require('../util/auth')
 router.get('/',auth, profileControllers.getProfile);
 router.put('/',auth, profileControllers.updateProfile);
 router.delete('/',auth, profileControllers.deleteProfile);
+router.delete('/:id',auth, profileControllers.deleteImageProfile);
+router.post('/upload',auth, profileControllers.uploadImageProfile);
 
 router.get('/other',auth,profileControllers.getOtherProfile);
 router.post('/matching',auth,profileControllers.matchingProfile);

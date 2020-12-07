@@ -14,8 +14,7 @@ const uploadImage = async (req, res) => {
     const uploadResponse = await cloudinary.uploader.upload(fileStr, {
       upload_preset: "dev_setups",
     });
-    console.log(uploadResponse.url);
-    res.status(201).json({ url: uploadResponse.url });
+    res.status(201).json({url: uploadResponse.url });
   } catch (err) {
     console.error("error", err);
     res.status(500).json({ err: "Something went wrong" });

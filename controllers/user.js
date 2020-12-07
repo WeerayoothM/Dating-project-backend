@@ -94,7 +94,7 @@ const getUserById = async (req, res) => {
     ]
   });
 
-  if (targetUser) return res.status(200).send(targetUser)
+  if (targetUser) return res.status(200).send(targetUser) 
   else return res.status(404).send({ message: 'Not found user' })
 
 }
