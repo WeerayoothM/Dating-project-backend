@@ -34,7 +34,7 @@ const server = app.listen(process.env.PORT || 5555, () => {
 })
 
 //* Initialize socket for the server
-const socket = require('socket.io')
+const socket = require('socket.io');
 const io = socket(server);
 const jwt = require("jsonwebtoken");
 

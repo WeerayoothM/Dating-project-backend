@@ -25,7 +25,7 @@ const register = async (req, res) => {
 
   if (targetUser) {
     console.log("err");
-    res.status(400).send({ message: "User already taken" });
+    res.status(400).send({ error: "User already taken" });
   } else {
     console.log("register");
     const salt = bcryptjs.genSaltSync(12);
@@ -94,7 +94,7 @@ const getUserById = async (req, res) => {
     ]
   });
 
-  if (targetUser) return res.status(200).send(targetUser) 
+  if (targetUser) return res.status(200).send(targetUser)
   else return res.status(404).send({ message: 'Not found user' })
 
 }
